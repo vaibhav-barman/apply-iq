@@ -3,14 +3,8 @@ import { cn } from "@/lib/utils"
 import { 
   LayoutDashboard, 
   FileSearch, 
-  CheckCircle, 
-  Search, 
   PenTool, 
-  ListOrdered, 
   Users, 
-  MessageSquare, 
-  Mail, 
-  FileText, 
   History, 
   Settings 
 } from "lucide-react"
@@ -22,88 +16,114 @@ export function Sidebar() {
     {
       title: "OVERVIEW",
       items: [
-        { name: "Dashboard", path: "/", icon: LayoutDashboard },
+        { name: "Overview", path: "/", icon: LayoutDashboard },
       ],
     },
     {
       title: "APPLICATION",
       items: [
         { name: "Analyze Job", path: "/analyze", icon: FileSearch },
-        { name: "Job Match", path: "/job-match", icon: CheckCircle },
-        { name: "ATS Keywords", path: "/ats-keywords", icon: Search },
+        { name: "Applications", path: "/applications", icon: History },
       ],
     },
     {
       title: "OPTIMIZE",
       items: [
-        { name: "Resume Rewriter", path: "/optimize/rewrite", icon: PenTool },
-        { name: "Bullet Enhancer", path: "/optimize/bullets", icon: ListOrdered },
+        { name: "Resume Studio", path: "/optimize/rewrite", icon: PenTool },
       ],
     },
     {
       title: "PREPARE",
       items: [
         { name: "Interview Prep", path: "/prepare/interview", icon: Users },
-        { name: "Hiring Manager Test", path: "/prepare/hiring-manager", icon: MessageSquare },
-      ],
-    },
-    {
-      title: "OUTREACH",
-      items: [
-        { name: "Recruiter Message", path: "/outreach/recruiter", icon: Mail },
-        { name: "Cover Letter", path: "/outreach/cover-letter", icon: FileText },
-      ],
-    },
-    {
-      title: "HISTORY",
-      items: [
-        { name: "Applications", path: "/applications", icon: History },
       ],
     },
   ]
 
   return (
-    <aside className="w-64 border-r border-white/5 bg-glass-base backdrop-blur-md flex flex-col h-full shrink-0 hidden md:flex relative z-10 shadow-glass-floor">
-      <div className="h-16 flex items-center px-6 border-b border-white/5">
-        <h1 className="text-xl font-bold tracking-tight text-primary">APPLYIQ</h1>
-      </div>
-      <div className="flex-1 overflow-y-auto py-6 px-4 space-y-8">
-        {navGroups.map((group) => (
-          <div key={group.title}>
-            <h2 className="px-3 text-[10px] font-semibold text-muted-foreground tracking-widest uppercase mb-3">
-              {group.title}
-            </h2>
-            <div className="space-y-1">
-              {group.items.map((item) => {
-                const isActive = location.pathname === item.path
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={cn(
-                      "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200",
-                      isActive
-                        ? "bg-primary/10 text-primary border border-primary/20 shadow-glow"
-                        : "text-muted-foreground hover:bg-glass-hover hover:text-foreground border border-transparent"
-                    )}
-                  >
-                    <item.icon className={cn("h-4 w-4", isActive ? "text-primary" : "text-muted-foreground")} />
-                    {item.name}
-                  </Link>
-                )
-              })}
+    <aside className="w-[230px] shrink-0 min-h-screen border-r border-surface-border flex flex-col justify-between p-5 bg-midnight/90 backdrop-blur-xl z-20">
+      <div className="space-y-8">
+        {/* Brand Logo Mark & Name */}
+        <div className="flex items-center gap-3 px-1.5 py-1">
+          <div className="relative w-8 h-8 rounded-lg bg-gradient-to-tr from-electric-indigo via-electric-violet to-electric-cyan p-[1px] shadow-glow-violet">
+            <div className="w-full h-full bg-[#090B16] rounded-[7px] flex items-center justify-center">
+              {/* Custom Geometric Minimal Spark Mark */}
+              <svg className="w-4 h-4 text-electric-cyan" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
             </div>
           </div>
-        ))}
+          <div className="flex items-center gap-2">
+            <span className="font-bold tracking-tight text-base text-white">ApplyIQ</span>
+            <span className="text-[10px] font-mono tracking-widest px-1.5 py-0.5 rounded uppercase font-semibold bg-electric-violet/15 text-electric-cyan border border-electric-cyan/20">AI</span>
+          </div>
+        </div>
+
+        {/* Navigation Link Items */}
+        <nav className="space-y-6 text-sm font-medium">
+          {navGroups.map((group) => (
+            <div key={group.title}>
+              {/* <h2 className="px-3 text-[10px] font-semibold text-canvas-dim tracking-widest uppercase mb-3">
+                {group.title}
+              </h2> */}
+              <div className="space-y-1">
+                {group.items.map((item) => {
+                  const isActive = location.pathname === item.path
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={cn(
+                        "group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all",
+                        isActive
+                          ? "text-white bg-surface-subtle/80 border border-white/5"
+                          : "text-canvas-muted hover:text-white hover:bg-surface-hover border border-transparent"
+                      )}
+                    >
+                      {isActive && (
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 rounded-r bg-gradient-to-b from-electric-cyan to-electric-violet"></div>
+                      )}
+                      <item.icon className={cn(
+                        "w-4 h-4 transition-colors", 
+                        isActive ? "text-electric-cyan" : "text-canvas-dim group-hover:text-electric-violet"
+                      )} />
+                      <span>{item.name}</span>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+          
+          <div className="pt-2">
+            <Link
+              to="/settings"
+              className={cn(
+                "group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all",
+                location.pathname === "/settings"
+                  ? "text-white bg-surface-subtle/80 border border-white/5"
+                  : "text-canvas-muted hover:text-white hover:bg-surface-hover border border-transparent"
+              )}
+            >
+              <Settings className="w-4 h-4 text-canvas-dim group-hover:text-white transition-colors" />
+              <span>Settings</span>
+            </Link>
+          </div>
+        </nav>
       </div>
-      <div className="p-4 border-t border-white/5">
-        <Link
-          to="/settings"
-          className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-glass-hover hover:text-foreground transition-all duration-200 border border-transparent"
-        >
-          <Settings className="h-4 w-4" />
-          Settings
-        </Link>
+
+      {/* Engine Status Pill at Sidebar Foot */}
+      <div className="pt-4 border-t border-surface-border">
+        <div className="px-3 py-2 rounded-lg bg-surface/50 border border-white/5 flex items-center gap-2.5">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-electric-cyan opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-electric-cyan"></span>
+          </span>
+          <div className="text-[11px] font-mono text-canvas-muted leading-tight">
+            <span className="text-white font-medium">Copilot Engine</span> v2.4<br/>
+            <span className="text-emerald-400/90">● Online</span>
+          </div>
+        </div>
       </div>
     </aside>
   )

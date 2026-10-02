@@ -4,38 +4,43 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
+        midnight: '#070811',
+        obsidian: '#0B0D17',
+        surface: {
+          DEFAULT: '#0F1221',
+          subtle: '#14182B',
+          border: 'rgba(255, 255, 255, 0.08)',
+          hover: 'rgba(255, 255, 255, 0.04)'
+        },
+        electric: {
+          violet: '#8B5CF6',
+          cyan: '#22D3EE',
+          indigo: '#4338CA',
+          glow: 'rgba(139, 92, 246, 0.15)'
+        },
+        canvas: {
+          text: '#F5F5FA',
+          muted: '#A1A1B5',
+          dim: '#62627A'
+        },
         background: '#070811',
-        foreground: '#F8FAFC',
+        foreground: '#F5F5FA',
         muted: {
           DEFAULT: 'rgba(255, 255, 255, 0.05)',
-          foreground: '#94A3B8',
+          foreground: '#A1A1B5',
         },
         primary: {
-          DEFAULT: '#6366F1', // Soft Indigo
-          foreground: '#F8FAFC',
+          DEFAULT: '#8B5CF6', // Electric Violet
+          foreground: '#F5F5FA',
         },
         secondary: {
-          DEFAULT: '#8B5CF6', // Electric Violet
-          foreground: '#F8FAFC',
+          DEFAULT: '#22D3EE', // Electric Cyan
+          foreground: '#F5F5FA',
         },
-        tertiary: {
-          DEFAULT: '#22D3EE', // Luminous Cyan
-          foreground: '#000608',
-        },
-        card: {
-          DEFAULT: 'rgba(23, 26, 48, 0.70)',
-          foreground: '#F8FAFC',
-        },
-        glass: {
-          base: 'rgba(15, 17, 32, 0.65)',
-          raised: 'rgba(23, 26, 48, 0.70)',
-          hover: 'rgba(30, 34, 62, 0.85)',
-        },
-        border: 'rgba(255, 255, 255, 0.08)',
-        'border-active': 'rgba(99, 102, 241, 0.35)',
         success: {
           DEFAULT: '#10B981', // Emerald
           foreground: '#ffffff',
@@ -50,26 +55,22 @@ export default {
           foreground: '#ffffff',
         },
       },
-      borderRadius: {
-        lg: '1rem', // 16px
-        md: '0.75rem', // 12px
-        sm: '0.5rem', // 8px
-        xl: '1.5rem', // 24px
-        pill: '9999px',
-      },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        mono: ['Geist Mono', 'monospace'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       boxShadow: {
-        glow: '0 0 24px rgba(99, 102, 241, 0.15)',
-        'glow-strong': '0 16px 48px -8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(99, 102, 241, 0.12)',
+        'glass-subtle': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+        'glow-cyan': '0 0 25px -5px rgba(34, 211, 238, 0.3)',
+        'glow-violet': '0 0 35px -5px rgba(139, 92, 246, 0.25)',
+        glow: '0 0 24px rgba(139, 92, 246, 0.15)',
+        'glow-strong': '0 16px 48px -8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(139, 92, 246, 0.12)',
         'glass-floor': '0 8px 32px -4px rgba(0, 0, 0, 0.5)',
         'btn-primary': 'inset 0 1px 0 rgba(255, 255, 255, 0.25)',
-        'btn-primary-hover': '0 0 16px rgba(99, 102, 241, 0.4)',
-        'input-focus': '0 0 0 3px rgba(99, 102, 241, 0.20)',
+        'btn-primary-hover': '0 0 16px rgba(139, 92, 246, 0.4)',
+        'input-focus': '0 0 0 3px rgba(139, 92, 246, 0.20)',
       }
-    },
+    }
   },
   plugins: [],
 }

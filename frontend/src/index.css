@@ -1,29 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: #070811;
-    --foreground: #F8FAFC;
-    --radius: 0.5rem;
-  }
-
   body {
-    background-color: var(--background);
-    background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.08), transparent 70%);
-    background-attachment: fixed;
-    color: var(--foreground);
+    @apply bg-midnight text-canvas-text antialiased;
     font-family: 'Inter', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 }
 
 @layer utilities {
+  .bg-ambient-blooms {
+    background-image: 
+      radial-gradient(circle at 18% 22%, rgba(139, 92, 246, 0.09) 0%, transparent 45%),
+      radial-gradient(circle at 82% 18%, rgba(34, 211, 238, 0.08) 0%, transparent 42%),
+      radial-gradient(circle at 65% 75%, rgba(67, 56, 202, 0.07) 0%, transparent 50%);
+  }
+
+  .glass-panel {
+    background: rgba(15, 18, 33, 0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  .glass-panel-subtle {
+    background: rgba(15, 18, 33, 0.45);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .animate-orb-float {
+    animation: subtle-float 9s ease-in-out infinite;
+  }
+
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@keyframes subtle-float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.008);
   }
 }
