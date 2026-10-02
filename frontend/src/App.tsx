@@ -4,6 +4,7 @@ import Dashboard from "@/pages/Dashboard"
 import AnalyzeJob from "@/pages/AnalyzeJob"
 import ApplicationHistory from "@/pages/ApplicationHistory"
 import PlaceholderPage from "@/pages/PlaceholderPage"
+import AnalysisResults from "@/pages/AnalysisResults"
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/analyze" element={<AnalyzeJob />} />
+          <Route path="/applications/:id/analysis" element={<AnalysisResults />} />
           <Route path="/applications" element={<ApplicationHistory />} />
           <Route path="/job-match" element={<PlaceholderPage title="Job Match" />} />
           <Route path="/ats-keywords" element={<PlaceholderPage title="ATS Keywords" />} />
