@@ -17,7 +17,7 @@ def analyze_application(db: Session, user: User, application_id: str) -> Analysi
     if not application:
         raise HTTPException(status_code=404, detail="Application not found")
 
-    if not application.resume or not application.resume.parsed_content:
+    if not application.resume or not application.resume.extracted_text:
         raise HTTPException(status_code=400, detail="Resume content is missing or not parsed")
 
     # Check if analysis already exists
@@ -27,7 +27,7 @@ def analyze_application(db: Session, user: User, application_id: str) -> Analysi
 
     # Invoke Gemini
     result: AnalysisResultSchema = gemini_service.analyze_application(
-        resume_text=application.resume.parsed_content,
+        resume_text=application.resume.extracted_text,
         job_description=application.job_description
     )
 
