@@ -26,10 +26,15 @@ def analyze_application(db: Session, user: User, application_id: str) -> Analysi
     ).first()
 
     # Invoke Gemini
-    result: AnalysisResultSchema = gemini_service.analyze_application(
-        resume_text=application.resume.extracted_text,
-        job_description=application.job_description
-    )
+    try:
+        result: AnalysisResultSchema = gemini_service.analyze_application(
+            resume_text=application.resume.extracted_text,
+            job_description=application.job_description
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to analyze application: {str(e)}")
 
     if existing_analysis:
         existing_analysis.score = result.overall_score
