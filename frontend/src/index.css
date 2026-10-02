@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #070811;
+    --foreground: #F8FAFC;
+    --radius: 0.5rem;
+  }
+
+  body {
+    background-color: var(--background);
+    background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.08), transparent 70%);
+    background-attachment: fixed;
+    color: var(--foreground);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

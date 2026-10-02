@@ -1,0 +1,24 @@
+# Node
+node_modules/
+dist/
+build/
+.npm
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Coverage
+coverage/
+.coverage
+htmlcov/
