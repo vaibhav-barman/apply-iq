@@ -48,13 +48,14 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Configure environment variables:
-Ensure a `.env` file exists in the `backend` directory (you can copy `.env.example` to `.env`). The database URL should point to your local PostgreSQL instance:
+5. Configure environment variables:
+Ensure a `.env` file exists in the `backend` directory (you can copy `.env.example` to `.env`). The database URL should point to your local PostgreSQL instance, and you must configure a Gemini API Key for AI Analysis (Phase 3):
 ```bash
 DATABASE_URL=postgresql://postgres:password@localhost:5432/applyiq_dev
+GEMINI_API_KEY="your-google-gemini-api-key"
 ```
 
-5. Run database migrations to set up the schema:
+6. Run database migrations to set up the schema:
 ```bash
 alembic upgrade head
 ```
@@ -99,8 +100,8 @@ npm run dev
 4. **Application History:** Go to `/applications` to view a list of all your paired resumes and job descriptions.
 
 ### Feature Status
-- **Implemented:** Premium Dark Glassmorphic Design System, Resume Parsing & Management, Job Details Intake, Application Tracking Dashboard, PostgreSQL Integration.
-- **Under Development (Coming Soon):** Phase 3 (AI Analysis with Gemini API), Phase 4 (Resume Studio), Phase 5 (Actionable Insights & Match Scoring), Phase 6 (Interview Prep).
+- **Implemented:** Premium Dark Glassmorphic Design System, Resume Parsing & Management, Job Details Intake, Application Tracking Dashboard, PostgreSQL Integration, **Phase 3: AI Analysis with Gemini API & Results Dashboard**.
+- **Under Development (Coming Soon):** Phase 4 (Resume Studio), Phase 5 (Actionable Insights & Match Scoring), Phase 6 (Interview Prep).
 
 ---
 
