@@ -47,3 +47,22 @@ def delete_application(
     user: User = Depends(get_current_user)
 ):
     return application_service.delete_application(db, user, application_id)
+
+from app.services import analysis_service
+from app.schemas.analysis import AnalysisResultSchema
+
+@router.post("/{application_id}/analyze", response_model=AnalysisResultSchema)
+def analyze_application(
+    application_id: str,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user)
+):
+    return analysis_service.analyze_application(db, user, application_id)
+
+@router.get("/{application_id}/analysis", response_model=AnalysisResultSchema)
+def get_analysis(
+    application_id: str,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user)
+):
+    return analysis_service.get_analysis(db, user, application_id)
