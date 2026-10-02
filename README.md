@@ -3,60 +3,76 @@
 ApplyIQ is an AI-powered job application intelligence platform. It analyzes the relationship between a candidate's resume and a specific job description to provide deep insights on ATS compatibility, missing skills, and recruiter risks.
 
 ## Prerequisites
-- **Node.js** (v18+)
-- **Python** (v3.9+)
-- **Docker** (for the local PostgreSQL database)
+- **Node.js** (v18+) - verify with `node -v`
+- **Python** (v3.9+) - verify with `python3 --version`
+- **Docker Desktop** (required to run the local PostgreSQL database)
+- **Git** - verify with `git --version`
 
 ---
 
 ## 🚀 How to Run the Application Locally
 
-You will need to open **three separate terminal tabs** to run the database, the backend, and the frontend concurrently.
+You will need to open **two separate terminal tabs** (or three) to run the backend and the frontend concurrently.
 
-### Step 1: Start the Database (Terminal 1)
-We use a Docker container to host the local PostgreSQL database.
-
-1. Ensure Docker Desktop is running on your machine.
-2. Run the following command:
+### Step 1: Clone the Repository
+Clone the repository to a directory of your choice and enter it:
 ```bash
-docker run --name applyiq-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=applyiq_dev -p 5432:5432 -d postgres:15-alpine
+git clone https://github.com/vaibhav-barman/apply-iq.git
+cd apply-iq
 ```
-*(Note: If you've already created this container in the past and it is stopped, you can just run `docker start applyiq-db`)*
+*(All following commands assume you are running them from the `apply-iq` repository root unless otherwise stated.)*
 
-### Step 2: Start the FastAPI Backend (Terminal 2)
-The backend is a Python FastAPI application that connects to the database and serves the API.
-
-1. Navigate to the absolute backend directory:
+### Step 2: Start the Database
+The backend requires a PostgreSQL database. A Docker Compose file is provided to start it easily.
+1. Ensure **Docker Desktop** is running.
+2. Start the database service in the background:
 ```bash
-cd /Users/vaibhavbarman/Desktop/Projects/apply-iq/backend
+docker-compose up -d
 ```
+*(This starts the PostgreSQL container on port 5432 using credentials `postgres`:`password` and the database `applyiq_dev`.)*
 
-2. Activate the virtual environment:
+### Step 3: Start the FastAPI Backend (Terminal 1)
+1. Navigate to the backend directory:
 ```bash
+cd backend
+```
+2. Create and activate a Python virtual environment:
+```bash
+python3 -m venv venv
 source venv/bin/activate
 ```
+*(On Windows, use `venv\Scripts\activate`)*
 
-3. (Optional) If you haven't run database migrations yet, initialize the database:
+3. Install backend dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Configure environment variables:
+Ensure a `.env` file exists in the `backend` directory (you can copy `.env.example` to `.env`). The database URL should point to your local PostgreSQL instance:
+```bash
+DATABASE_URL=postgresql://postgres:password@localhost:5432/applyiq_dev
+```
+
+5. Run database migrations to set up the schema:
 ```bash
 alembic upgrade head
 ```
 
-4. Start the FastAPI development server:
+6. Start the FastAPI development server:
 ```bash
 uvicorn app.main:app --reload --port 8000
 ```
-*The backend API is now running at http://localhost:8000*
-*You can view the interactive API documentation at http://localhost:8000/docs*
+* The backend API is now running at `http://localhost:8000`
+* Interactive API documentation (Swagger) is available at `http://localhost:8000/docs`
 
-### Step 3: Start the React Frontend (Terminal 3)
-The frontend is a React SPA built with Vite, TailwindCSS, and shadcn/ui.
-
-1. Navigate to the absolute frontend directory:
+### Step 4: Start the React Frontend (Terminal 2)
+1. Open a new terminal tab and navigate to the frontend directory:
 ```bash
-cd /Users/vaibhavbarman/Desktop/Projects/apply-iq/frontend
+cd frontend
 ```
 
-2. Install dependencies (if you haven't already):
+2. Install Node dependencies:
 ```bash
 npm install
 ```
@@ -65,12 +81,47 @@ npm install
 ```bash
 npm run dev
 ```
-*The frontend application is now running at http://localhost:5173*
+* The frontend application is now running at `http://localhost:5173`
+
+*(Note: The frontend makes API calls to `http://localhost:8000/api`. This is configured by default in the codebase, so no extra `.env` is typically needed for the frontend.)*
+
+---
+
+## 💡 How to Use the Application
+
+1. **Open the App:** Navigate to `http://localhost:5173` in your browser.
+2. **Dashboard:** View the overview of your applications.
+3. **Analyze a Job:** 
+   - Click "New Analysis" or navigate to `/analyze`.
+   - **Step 1:** Upload a resume (PDF or DOCX). It will be securely stored and parsed.
+   - **Step 2:** Paste a job description (at least 20 characters), job title, and company name.
+   - **Step 3:** Review the paired information and click "Create Application".
+4. **Application History:** Go to `/applications` to view a list of all your paired resumes and job descriptions.
+
+### Feature Status
+- **Implemented:** Premium Dark Glassmorphic Design System, Resume Parsing & Management, Job Details Intake, Application Tracking Dashboard, PostgreSQL Integration.
+- **Under Development (Coming Soon):** Phase 3 (AI Analysis with Gemini API), Phase 4 (Resume Studio), Phase 5 (Actionable Insights & Match Scoring), Phase 6 (Interview Prep).
 
 ---
 
 ## 🛠️ Troubleshooting
 
-- **Database Connection Error**: Ensure your Docker container is running (`docker ps`). The backend expects PostgreSQL to be available at `postgresql://postgres:password@localhost:5432/applyiq_dev`.
-- **Frontend Fails to Build**: Ensure you are using a recent version of Node.js and have run `npm install` inside the `frontend` directory.
-- **Port Conflicts**: Ensure ports `8000` (backend) and `5173` (frontend) are not being used by other applications.
+- **Database Connection Error (`psycopg2.OperationalError`)**: Ensure Docker is running and the database container is active (`docker ps`). If the container is stopped, run `docker-compose up -d` in the root directory.
+- **Port Conflicts**: If port `8000` or `5173` is in use, find and kill the process using those ports, or change the port using `uvicorn --port 8001` (backend) and update the frontend API base URL accordingly.
+- **Database Migration Errors**: If you encounter errors with `alembic upgrade head`, ensure you haven't switched branches with divergent schemas. You may need to drop the database and recreate it.
+- **Frontend Fails to Build**: Delete the `node_modules` folder and `package-lock.json` in the `frontend` directory, and run `npm install` again. Ensure you are using Node.js v18+.
+- **Missing Dependencies**: Ensure the Python virtual environment is activated (`source venv/bin/activate`) before running the backend.
+
+---
+
+## ⏹️ Stopping and Restarting
+
+**To stop the servers:**
+- **Frontend:** Press `Ctrl + C` in the frontend terminal.
+- **Backend:** Press `Ctrl + C` in the backend terminal.
+- **Database:** Run `docker-compose down` from the repository root to stop the database (data is persisted in a volume).
+
+**To restart later:**
+1. Start the database: `docker-compose up -d`
+2. Start the backend: `cd backend && source venv/bin/activate && uvicorn app.main:app --reload --port 8000`
+3. Start the frontend: `cd frontend && npm run dev`
