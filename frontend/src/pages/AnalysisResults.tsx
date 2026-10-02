@@ -474,7 +474,7 @@ export default function AnalysisResults() {
                       </span>
                     </div>
                     <p className="text-xs text-white font-mono bg-[#090b16] p-3 rounded-lg border border-accentCyan/20 leading-relaxed">
-                      "{suggestion.suggested_rewrite}"
+                      "{suggestion.suggested_rewrite || 'No specific rewrite provided.'}"
                     </p>
                   </div>
                   <div className="mt-3 text-[11px] text-accentCyan flex items-center gap-1">
