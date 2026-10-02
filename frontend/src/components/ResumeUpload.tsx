@@ -2,9 +2,6 @@ import { useState, useCallback, useEffect } from "react"
 import { useDropzone } from "react-dropzone"
 import { motion, AnimatePresence } from "framer-motion"
 import { UploadCloud, CheckCircle, AlertCircle, File as FileIcon, Trash2, Loader2, List as ListIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
 import { resumeService, type ResumeResponse, type ResumeListItem } from "@/services/resumeService"
 
 interface ResumeUploadProps {
@@ -128,26 +125,29 @@ export function ResumeUpload({ onSelectResume }: ResumeUploadProps) {
       
       {/* Existing Resumes List */}
       {resumes.length > 0 && (
-        <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-            <ListIcon className="h-4 w-4" /> Your Resumes
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2 tracking-wide">
+            <ListIcon className="h-4 w-4 text-primary" /> Your Resumes
           </h3>
           <div className="grid gap-3">
             {resumes.map(resume => {
               const isSelected = selectedResumeId === resume.id
               return (
-                <Card 
+                <div 
                   key={resume.id}
                   onClick={() => selectResume(resume.id)}
-                  className={`cursor-pointer transition-all duration-200 border ${isSelected ? 'border-primary ring-1 ring-primary/20 bg-primary/5 shadow-sm' : 'border-border hover:border-primary/50'}`}
+                  className={`cursor-pointer transition-all duration-300 border rounded-xl overflow-hidden
+                    ${isSelected 
+                      ? 'border-primary bg-primary/5 shadow-glow ring-1 ring-primary/20' 
+                      : 'border-white/10 bg-glass-base hover:border-primary/50 hover:bg-white/5'}`}
                 >
-                  <CardContent className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div className="flex items-center gap-3 min-w-0 flex-1">
-                      <div className={`p-2 rounded-lg shrink-0 ${isSelected ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                  <div className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-4 min-w-0 flex-1">
+                      <div className={`p-2.5 rounded-lg shrink-0 flex items-center justify-center ${isSelected ? 'bg-primary/20 text-primary border border-primary/30' : 'bg-white/5 text-muted-foreground border border-white/10'}`}>
                         <FileIcon className="h-5 w-5" />
                       </div>
-                      <div className="min-w-0">
-                        <p className={`text-sm font-medium truncate ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+                      <div className="min-w-0 space-y-0.5">
+                        <p className={`text-sm font-medium truncate ${isSelected ? 'text-foreground' : 'text-foreground/80'}`}>
                           {resume.filename}
                         </p>
                         <p className="text-xs text-muted-foreground">
@@ -155,20 +155,19 @@ export function ResumeUpload({ onSelectResume }: ResumeUploadProps) {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-3 shrink-0">
                       {isSelected && <CheckCircle className="h-5 w-5 text-primary" />}
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="h-8 w-8 text-muted-foreground hover:text-danger hover:bg-danger/10"
+                      <button 
+                        className="h-8 w-8 flex items-center justify-center rounded-md text-muted-foreground hover:text-danger hover:bg-danger/10 transition-colors"
                         onClick={(e) => deleteResume(resume.id, e)}
                         disabled={isDeleting === resume.id}
+                        title="Delete resume"
                       >
                         {isDeleting === resume.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                      </Button>
+                      </button>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               )
             })}
           </div>
@@ -179,15 +178,18 @@ export function ResumeUpload({ onSelectResume }: ResumeUploadProps) {
       {selectedResumeDetail && (
         <AnimatePresence>
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}>
-            <div className="flex items-center gap-2 mb-2">
-               <Button variant="outline" size="sm" onClick={() => setShowPreview(!showPreview)} className="w-full">
+            <div className="flex items-center gap-2 mb-3">
+               <button 
+                 onClick={() => setShowPreview(!showPreview)} 
+                 className="w-full py-2 px-4 border border-white/10 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+               >
                  {showPreview ? "Hide Preview" : "Preview Extracted Text"}
-               </Button>
+               </button>
             </div>
             {showPreview && (
-              <div className="border border-border rounded-lg bg-card overflow-hidden">
-                <div className="p-4 max-h-64 overflow-y-auto">
-                  <pre className="text-xs font-mono text-muted-foreground whitespace-pre-wrap">
+              <div className="border border-white/10 rounded-lg bg-black/40 overflow-hidden shadow-inner">
+                <div className="p-4 max-h-64 overflow-y-auto custom-scrollbar">
+                  <pre className="text-xs font-mono text-muted-foreground/80 whitespace-pre-wrap leading-relaxed">
                     {selectedResumeDetail.extracted_text}
                   </pre>
                 </div>
@@ -206,24 +208,27 @@ export function ResumeUpload({ onSelectResume }: ResumeUploadProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98 }}
           >
-            <Card className="border-border shadow-sm">
-              <CardContent className="p-6 space-y-6">
+            <div className="border border-primary/30 bg-primary/5 rounded-xl shadow-glow overflow-hidden">
+              <div className="p-6 space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-primary/10 rounded-lg shrink-0">
+                  <div className="p-3 bg-primary/20 border border-primary/30 rounded-lg shrink-0">
                     <FileIcon className="h-6 w-6 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground truncate">{uploadFile?.name}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-primary/80 mt-1">
                       {(uploadFile?.size ? uploadFile.size / 1024 / 1024 : 0).toFixed(2)} MB • Uploading & Extracting...
                     </p>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Progress value={uploadProgress} className="h-2 transition-all duration-300" />
+                <div className="h-2 w-full bg-black/40 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-primary transition-all duration-300 ease-out"
+                    style={{ width: `${uploadProgress}%` }}
+                  />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
         ) : (
           <motion.div
@@ -234,28 +239,28 @@ export function ResumeUpload({ onSelectResume }: ResumeUploadProps) {
           >
             <div
               {...getRootProps()}
-              className={`relative border-2 border-dashed rounded-xl p-8 transition-colors duration-200 ease-in-out cursor-pointer overflow-hidden
-                ${isDragActive ? "border-primary bg-primary/5" : "border-border hover:border-primary/50 hover:bg-muted/30"}
-                ${status === "error" ? "border-danger/50 bg-danger/5" : "bg-card"}`}
+              className={`relative border-2 border-dashed rounded-xl p-8 transition-all duration-300 ease-in-out cursor-pointer overflow-hidden
+                ${isDragActive ? "border-primary bg-primary/5 shadow-glow" : "border-white/20 bg-glass-base hover:border-primary/50 hover:bg-white/5"}
+                ${status === "error" ? "border-danger/50 bg-danger/5" : ""}`}
             >
               <input {...getInputProps()} />
-              <div className="flex flex-col items-center justify-center text-center space-y-3">
-                <div className={`p-3 rounded-full ${isDragActive ? "bg-primary/10" : "bg-muted"}`}>
+              <div className="flex flex-col items-center justify-center text-center space-y-4">
+                <div className={`p-4 rounded-full transition-colors ${isDragActive ? "bg-primary/20 shadow-glow" : "bg-white/5"}`}>
                   <UploadCloud className={`h-6 w-6 ${isDragActive ? "text-primary" : "text-muted-foreground"}`} />
                 </div>
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-foreground">
-                    Upload a new resume
+                    Drag & drop a new resume, or click to browse
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    PDF or DOCX up to 5MB
+                    PDF or DOCX (max 5MB)
                   </p>
                 </div>
               </div>
             </div>
 
             {status === "error" && (
-              <div className="mt-4 flex items-start gap-2 p-3 text-sm text-danger-foreground bg-danger/10 rounded-md">
+              <div className="mt-4 flex items-start gap-3 p-4 text-sm text-danger-foreground bg-danger/10 border border-danger/20 rounded-xl shadow-sm">
                 <AlertCircle className="h-5 w-5 shrink-0" />
                 <p>{errorMsg}</p>
               </div>
