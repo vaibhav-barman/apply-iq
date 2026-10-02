@@ -24,3 +24,4 @@ class Application(Base):
 
     user = relationship("User", back_populates="applications")
     resume = relationship("Resume", back_populates="applications")
+    analysis = relationship("Analysis", back_populates="application", uselist=False, cascade="all, delete-orphan")
