@@ -54,6 +54,11 @@ export default {
           DEFAULT: '#F43F5E', // Coral Red
           foreground: '#ffffff',
         },
+        accentCyan: '#22D3EE',
+        accentViolet: '#8B5CF6',
+        accentEmerald: '#10B981',
+        accentAmber: '#F59E0B',
+        surfaceBorder: 'rgba(255, 255, 255, 0.08)',
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
