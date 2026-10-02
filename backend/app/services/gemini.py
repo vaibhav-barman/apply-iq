@@ -30,9 +30,11 @@ class GeminiService:
         prompt = f"""
 You are an expert career coach and technical recruiter. Your task is to analyze the provided resume against the provided job description and return a structured JSON evaluation.
 
-Do NOT invent evidence. Base all claims only on the provided resume.
-If a skill is missing, explicitly mark it as missing.
-Distinguish between skills totally missing and skills that are present but poorly phrased.
+CRITICAL RULES:
+1. Do NOT invent evidence. Base all claims only on the provided resume. Never silently hallucinate experience, qualifications, companies, or achievements.
+2. If a skill is missing, explicitly mark it as missing.
+3. Distinguish between skills totally missing and skills that are present but poorly phrased.
+4. The `overall_score` is strictly an alignment heuristic based on keyword and experience overlap, not a hiring probability or guaranteed ATS score. Reflect this limitation in `score_limitations`.
 
 # Resume
 {resume_text}
