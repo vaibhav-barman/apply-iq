@@ -35,8 +35,9 @@ export function ResumeUpload({ onSelectResume }: ResumeUploadProps) {
   }, [])
 
   useEffect(() => {
-    fetchResumes()
-  }, [fetchResumes])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchResumes();
+  }, []);
 
   const selectResume = useCallback(async (id: string) => {
     setSelectedResumeId(id)

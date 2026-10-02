@@ -138,7 +138,7 @@ export default function Dashboard() {
                   "group-hover:border-white/20"
                 ];
                 const borderHover = borderColorClasses[index % 3];
-                const matchScore = 80 + Math.floor(Math.random() * 15); // Stub score
+                const matchScore = 80 + (app.id.charCodeAt(0) % 15); // Stub score
 
                 return (
                   <div key={app.id} onClick={() => navigate(`/applications/${app.id}`)} className="cursor-pointer group p-4 rounded-xl glass-panel-subtle hover:bg-surface-subtle/90 border border-white/5 hover:border-white/15 transition-all flex items-center justify-between gap-4">

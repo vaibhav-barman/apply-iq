@@ -22,8 +22,9 @@ export default function ApplicationHistory() {
   }, [])
 
   useEffect(() => {
-    fetchApplications()
-  }, [fetchApplications])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchApplications();
+  }, []);
 
   const filteredApps = applications.filter(app => 
     app.company.toLowerCase().includes(searchQuery.toLowerCase()) || 
