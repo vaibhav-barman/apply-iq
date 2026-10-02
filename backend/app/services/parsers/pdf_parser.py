@@ -1,4 +1,4 @@
-import fitz  # PyMuPDF
+import pymupdf
 from typing import Tuple, IO
 
 def extract_text_from_pdf(file_stream: IO[bytes]) -> Tuple[str, int]:
@@ -7,7 +7,7 @@ def extract_text_from_pdf(file_stream: IO[bytes]) -> Tuple[str, int]:
     Returns a tuple of (extracted_text, page_count).
     """
     try:
-        doc = fitz.open(stream=file_stream.read(), filetype="pdf")
+        doc = pymupdf.open(stream=file_stream.read(), filetype="pdf")
     except Exception as e:
         raise ValueError("Invalid or corrupted PDF file.")
 

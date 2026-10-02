@@ -1,5 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.exc import OperationalError
 from app.api.routes import resumes, applications
 
 app = FastAPI(
@@ -16,6 +18,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(OperationalError)
+async def sqlalchemy_operational_error_handler(request: Request, exc: OperationalError):
+    return JSONResponse(
+        status_code=503,
+        content={
+            "detail": "Database connection failed. Please ensure PostgreSQL is running (e.g. via 'docker-compose up -d')."
+        }
+    )
 
 # Include routers
 app.include_router(resumes.router, prefix="/api/resumes", tags=["resumes"])
